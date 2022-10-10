@@ -6,45 +6,8 @@ const validator = require('../middlewares/validation-middlewares')
 
 const router = new Router()
 
-router.post('/signup',validator.login(),
-
-    body('password')
-        .exists()
-        .withMessage('Пароль должен существовать')
-
-        .isString()
-        .withMessage('Пароль должен быть строковым значениям')
-
-        .isLength({ min: 6, max: 12 })
-        .withMessage('Логин должен быть от 2 до 180 символов'),
-    UserController.signup
-)
-
-router.post('/signin',
-    body ('login')
-        .exists()
-        .withMessage('Логин должен существовать')
-
-        .isString()
-        .withMessage('Логин должен быть строковым значениям')
-
-        .isLength({ min: 2, max: 180 })
-        .withMessage('Логин должен быть от 2 до 180 символов')
-
-        .custom(login => !/\s/.test(login))
-        .withMessage('Логин должен быть от 2 до 180 символов'),
-
-    body('password')
-        .exists()
-        .withMessage('Пароль должен существовать')
-
-        .isString()
-        .withMessage('Пароль должен быть строковым значениям')
-
-        .isLength({ min: 6, max: 12 })
-        .withMessage('Логин должен быть от 2 до 180 символов'),
-    UserController.signin
-)
+router.post('/signup',validator.login(), validator.password(), UserController.signup)
+router.post('/signin', validator.login(), validator.password(), UserController.signin)
 
 router.get('/me', UserController.me)
 router.get('/users', authMiddleware, UserController.users)
