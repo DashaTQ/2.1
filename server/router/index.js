@@ -2,22 +2,11 @@ const Router = require('express').Router
 const UserController = require('../controller/user-controller')
 const {body} = require('express-validator')
 const authMiddleware = require('../middlewares/auth-middlewares')
+const validator = require('../middlewares/validation-middlewares')
 
 const router = new Router()
 
-router.post('/signup',
-    body('login')
-        .exists()
-        .withMessage('Логин должен существовать')
-
-        .isString()
-        .withMessage('Логин должен быть строковым значениям')
-
-        .isLength({ min: 2, max: 180 })
-        .withMessage('Логин должен быть от 2 до 180 символов')
-
-        .custom(login => !/\s/.test(login))
-        .withMessage('Логин должен быть от 2 до 180 символов'),
+router.post('/signup',validator.login(),
 
     body('password')
         .exists()
