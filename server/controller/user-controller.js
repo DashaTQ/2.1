@@ -1,6 +1,7 @@
 const userService = require('../service/user-service')
 const {validationResult} = require('express-validator')
 const ApiError = require('../exceptions/api-error')
+const userSchema = require('../models/user-model')
 
 class UserController{
     async signup(req, res, next){
@@ -70,7 +71,12 @@ class UserController{
 
     async UserID(req, res, next){
         try {
-
+            const {id} = req.params
+            if(!id){
+                res.status(400).json({massage: 'Пользователь не найден'})
+            }
+            const post = await userSchema.findById(id);
+            return res.json(post)
         }catch (e){
             next(e)
         }
@@ -85,13 +91,16 @@ class UserController{
         }
     }
 
-    async me(req, res, next) {
-        try {
-
-        } catch (e) {
-            next(e)
-        }
-    }
+//    async me(req, res, next) {
+//        try {
+//            const {id} = req.params
+//            const post = await userSchema.findById(id);
+//
+//            res.status(200).json(await post.getAllInfo())
+//        } catch (e) {
+//            next(e)
+//        }
+//    }
 }
 
 module.exports = new UserController()

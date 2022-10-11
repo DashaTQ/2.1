@@ -8,14 +8,12 @@ const router = new Router()
 
 router.post('/signup',validator.login(), validator.password(), UserController.signup)
 router.post('/signin', validator.login(), validator.password(), UserController.signin)
-
-router.get('/me', UserController.me)
 router.get('/users', authMiddleware, UserController.users)
+
 router.get('/user/:id', UserController.UserID)
-
 router.post('/logout',UserController.logout)
-
-
 router.get('refresh', UserController.refresh)
+
+//router.get('/me', UserController.me)
 
 module.exports = router
